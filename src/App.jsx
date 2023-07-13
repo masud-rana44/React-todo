@@ -20,12 +20,7 @@ function App() {
 
   function submitEditTask(taskId, description) {
     setTasks((tasks) =>
-      tasks.map((task) => {
-        if (task.id == taskId) {
-          const newTask = { task: description, id: task.id };
-          return newTask;
-        } else return task;
-      })
+      tasks.map((t) => (t.id == taskId ? { ...t, task: description } : t))
     );
     setEditTaskId(null);
   }
