@@ -1,27 +1,52 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import Form from "./components/Form";
 import Tasks from "./components/Tasks";
 
+const initialState = [];
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "add":
+      return [...state, action.task];
+    case "remove":
+      return state.filter((task) => task.id !== action.taskId);
+    case "edit":
+      return state.map((todo) =>
+        todo.id === action.taskId ? { ...todo, task: action.description } : todo
+      );
+    default:
+      return state;
+  }
+};
+
 function App() {
-  const [tasks, setTasks] = useState([]);
   const [editTaskId, setEditTaskId] = useState(null);
-
-  function handleAddTask(task) {
-    setTasks((tasks) => [...tasks, task]);
-  }
-
-  function handleRemoveTask(taskId) {
-    setTasks((tasks) => tasks.filter((task) => task.id !== taskId));
-  }
+  const [tasks, dispatch] = useReducer(reducer, initialState);
 
   function handleEditTask(taskId) {
     setEditTaskId(taskId);
   }
 
+  function handleAddTask(task) {
+    dispatch({
+      type: "add",
+      task,
+    });
+  }
+
+  function handleRemoveTask(taskId) {
+    dispatch({
+      type: "remove",
+      taskId,
+    });
+  }
+
   function submitEditTask(taskId, description) {
-    setTasks((tasks) =>
-      tasks.map((t) => (t.id == taskId ? { ...t, task: description } : t))
-    );
+    dispatch({
+      type: "edit",
+      taskId,
+      description,
+    });
     setEditTaskId(null);
   }
 
