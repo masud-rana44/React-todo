@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { taskContext } from "../App";
 
-function Form({ onAddTask }) {
+function Form() {
+  const { handleAddTask } = useContext(taskContext);
   const [task, setTask] = useState("");
 
   function handleSubmit(e) {
@@ -10,7 +12,7 @@ function Form({ onAddTask }) {
 
     const newTask = { task, id: Date.now() };
 
-    onAddTask(newTask);
+    handleAddTask(newTask);
     setTask("");
   }
 

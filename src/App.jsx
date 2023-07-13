@@ -1,6 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Form from "./components/Form";
 import Tasks from "./components/Tasks";
+
+export const taskContext = React.createContext(null);
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -26,21 +28,26 @@ function App() {
   }
 
   return (
-    <div className="font-sans bg-violet-700 w-full min-h-screen flex flex-col items-center justify-center">
-      <div className=" bg-indigo-950 px-6 py-10 min-w-[350px] rounded-sm">
-        <h1 className="text-white  text-2xl font-medium text-center mb-5">
-          Get things done!
-        </h1>
-        <Form onAddTask={handleAddTask} />
-        <Tasks
-          tasks={tasks}
-          onRemoveTask={handleRemoveTask}
-          onEditTask={handleEditTask}
-          submitEditTask={submitEditTask}
-          editTaskId={editTaskId}
-        />
+    <taskContext.Provider
+      value={{
+        tasks,
+        editTaskId,
+        handleAddTask,
+        handleRemoveTask,
+        handleEditTask,
+        submitEditTask,
+      }}
+    >
+      <div className="font-sans bg-violet-700 w-full min-h-screen flex flex-col items-center justify-center">
+        <div className=" bg-indigo-950 px-6 py-10 min-w-[350px] rounded-sm">
+          <h1 className="text-white  text-2xl font-medium text-center mb-5">
+            Get things done!
+          </h1>
+          <Form />
+          <Tasks />
+        </div>
       </div>
-    </div>
+    </taskContext.Provider>
   );
 }
 

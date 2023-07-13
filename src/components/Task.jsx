@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { taskContext } from "../App";
 
-function Task({ task, onRemoveTask, submitEditTask, onEditTask, editTaskId }) {
+function Task({ task }) {
+  const { handleRemoveTask, submitEditTask, handleEditTask, editTaskId } =
+    useContext(taskContext);
   const [description, setDescription] = useState(task.task);
 
   function handleEditSubmit(e, id) {
@@ -12,11 +15,7 @@ function Task({ task, onRemoveTask, submitEditTask, onEditTask, editTaskId }) {
   }
 
   function handleDeleteTask(id) {
-    onRemoveTask(id);
-  }
-
-  function handleEditTask(id) {
-    onEditTask(id);
+    handleRemoveTask(id);
   }
 
   return (
